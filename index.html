@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Obsidian Bridge2</title>
+    <title>Obsidian Bridge Debug</title>
 </head>
 <body>
     <script>
-        // 1. 주소창의 파라미터에서 값을 읽어옵니다. (?path=파일명)
+        // [디버깅 1] 페이지가 로드되었는지 확인
+        alert("1. 브릿지 페이지 접속 성공 (버전: 1.0.1)");
+
         const urlParams = new URLSearchParams(window.location.search);
         const path = urlParams.get('path');
-        alert(path)
-        if (path) {
-            // 2. 옵시디언 URI 생성
-            const obsidianURI = ${path};
-            
-            // 3. 앱 호출
-            window.location.href = obsidianURI;
 
-            // 4. 호출 후 창 닫기 (항상 허용 체크 후에는 바로 닫힙니다)
-            setTimeout(() => { window.close(); }, 1000);
+        // [디버깅 2] 파라미터 값을 제대로 읽었는지 확인
+        alert("2. 전달받은 경로(path): " + path);
+
+        if (path) {
+            const obsidianURI = `obsidian://new?vault=GURI&file=0_영림원%20프로젝트/${path}&append`;
+            
+            // [디버깅 3] 최종 생성된 URI 확인
+            alert("3. 호출할 URI: " + obsidianURI);
+
+            try {
+                window.location.href = obsidianURI;
+                alert("4. 옵시디언 호출 명령 전송 완료");
+            } catch (e) {
+                alert("에러 발생: " + e.message);
+            }
+
+            // 디버깅 중에는 자동으로 닫히면 확인이 어려우니 5초로 늘립니다.
+            setTimeout(() => { 
+                if(confirm("작업이 끝났습니다. 창을 닫을까요?")) {
+                    window.close();
+                }
+            }, 5000);
         } else {
-            document.body.innerHTML = "이동할 경로가 없습니다.";
+            alert("경고: path 파라미터가 없습니다. 주소를 확인해주세요.");
+            document.body.innerHTML = "<h1>전달된 경로가 없습니다.</h1>";
         }
     </script>
 </body>
