@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Obsidian Bridge</title>
+</head>
+<body>
+    <script>
+        // 1. 주소창의 파라미터에서 값을 읽어옵니다. (?path=파일명)
+        const urlParams = new URLSearchParams(window.location.search);
+        const path = urlParams.get('path');
+
+        if (path) {
+            // 2. 옵시디언 URI 생성
+            const obsidianURI = ${path};
+            
+            // 3. 앱 호출
+            window.location.href = obsidianURI;
+
+            // 4. 호출 후 창 닫기 (항상 허용 체크 후에는 바로 닫힙니다)
+            setTimeout(() => { window.close(); }, 1000);
+        } else {
+            document.body.innerHTML = "이동할 경로가 없습니다.";
+        }
+    </script>
+</body>
+</html>
